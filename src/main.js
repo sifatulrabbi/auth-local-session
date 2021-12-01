@@ -4,8 +4,10 @@ const config = require('./config');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const { localStrategy, serializer, deserializer } = require('./libs');
+const { localStrategy } = require('./libs');
+const { authService } = require('./services');
 const router = require('./routers');
+const { errorHandler } = require('./middlewares');
 
 const app = express();
 
@@ -29,13 +31,15 @@ app.use(
 );
 
 passport.use(localStrategy);
-passport.serializeUser(serializer);
-passport.deserializeUser(deserializer);
+passport.serializeUser(authService.serializer);
+passport.deserializeUser(authService.deserializer);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(router);
+
+app.use(errorHandler);
 
 app.listen(config.port, () => {
   console.log(`Server is running on port: ${config.port}`);

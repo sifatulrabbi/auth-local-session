@@ -1,1 +1,7 @@
-module.exports = { usersService: require('./users.service') };
+module.exports = {
+  passwordService: require('./password.service'),
+
+  usersService: require('./users.service'),
+
+  authService: require('./auth.service'),
+};

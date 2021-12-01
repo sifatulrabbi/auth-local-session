@@ -1,7 +1,17 @@
 const passport = require('passport');
 
 module.exports = function authRouter(router) {
-  router.post('/auth/login', passport.authenticate('local'), (req, res) => {
-    res.status(200).json({ user: req.user });
-  });
+  router.post(
+    '/auth/login',
+    passport.authenticate('local', {
+      failureRedirect: '/auth/login',
+    }),
+    (req, res, next) => {
+      try {
+        res.redirect(`/users/${req.user.username}`);
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
 };

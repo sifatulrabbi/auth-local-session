@@ -1,4 +1,4 @@
 const { Strategy } = require('passport-local');
-const validateUser = require('./validate-user');
+const { authService } = require('../services');
 
-module.exports = new Strategy(validateUser);
+module.exports = new Strategy(authService.validateUser);
