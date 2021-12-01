@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/main.js",
     "start:dev": "nodemon -e js -x node --trace-warnings src/main.js",
-    "lint": "eslint --ext .js"
+    "lint": "eslint --ext .js --fix"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
