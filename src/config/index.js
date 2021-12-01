@@ -10,4 +10,8 @@ module.exports = {
   errors: require('./errors'),
 
   connectDb: require('./connect-db'),
+
+  emailSenderAcc: process.env['EMAIL_SENDER_ACCOUNT'],
+
+  emailSenderAccPass: process.env['EMAIL_SENDER_ACCOUNT_PASS'],
 };

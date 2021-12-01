@@ -1,10 +1,10 @@
-const { CustomError } = require('../config');
-
 const router = require('express').Router();
 
 require('./users.router')(router);
 
 require('./auth.router')(router);
+
+require('./send-email.router')(router);
 
 router.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello world' });
