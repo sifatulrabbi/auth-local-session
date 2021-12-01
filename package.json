@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node src/main.js",
-    "start:dev": "nodemon -e js -x node --trace-warnings src/main.js"
+    "start:dev": "nodemon -e js -x node --trace-warnings src/main.js",
+    "lint": "eslint --ext .js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -21,6 +22,9 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "husky": "^7.0.4",
+    "eslint": "^8.3.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.0"
   }
 }
