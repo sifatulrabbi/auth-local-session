@@ -11,8 +11,8 @@ export const theme = {
     },
   },
   fontSize: {
-    h1: '5rem',
-    h2: '3.5rem',
+    h1: 'clamp(3rem, 7vw, 5rem)',
+    h2: 'clamp(2.2rem, 5vw,4rem)',
     h3: '2.5rem',
     h4: '1.7rem',
     body: '16px',
@@ -29,6 +29,7 @@ export const theme = {
   transition: (styleName: string) => {
     return `${styleName} 200ms ease-out`;
   },
+  breakPoint: '800px',
 };
 
 export type ITheme = typeof theme;

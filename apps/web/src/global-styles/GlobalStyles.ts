@@ -12,15 +12,19 @@ export const GlobalStyles = createGlobalStyle`
     font-family: inherit;
     list-style-type: none;
     text-decoration: none;
+    box-sizing: border-box;
   }
 
   body {
+    max-width: 100vw;
+    /* min-height: 100vh; */
     font-size: ${({ theme }) => theme.fontSize.body};
     font-weight: 400;
     font-family: sans-serif;
     background-color: ${({ theme }) => theme.palette.common.white};
     color: ${({ theme }) => theme.palette.common.black};
     line-height: 1.5;
+    position: relative;    
   }
 
   h1, h2, h3 {

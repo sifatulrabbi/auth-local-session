@@ -2,15 +2,15 @@ import React from 'react';
 import { StyledButton } from './button.styles';
 
 interface Props {
-  label: string;
   id?: string;
   classes?: string;
   handleClick?: (...args: any[]) => any;
   secondary?: boolean;
+  children: React.ReactNode;
 }
 
 export function Button({
-  label,
+  children,
   id,
   classes,
   secondary,
@@ -23,7 +23,7 @@ export function Button({
       onClick={handleClick}
       secondary={secondary}
     >
-      {label}
+      {children}
     </StyledButton>
   );
 }
