@@ -3,5 +3,5 @@
 ## Initialize project
 
 ```bash
-yarn run init
+yarn prepare
 ```
