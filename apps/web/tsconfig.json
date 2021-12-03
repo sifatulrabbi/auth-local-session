@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -17,7 +13,5 @@
     "allowJs": true,
     "esModuleInterop": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

@@ -14,7 +14,9 @@ export const StyledFooter = styled.footer`
   padding-top: 2rem;
   margin-top: 5vh;
   margin-bottom: 5vh;
+
   color: ${({ theme }) => theme.palette.common.fontSecondary};
+  font-size: ${({ theme }) => theme.fontSize.body2};
 
   @media screen and (min-width: ${({ theme }) => theme.breakPoint}) {
     padding: 1rem 8vw;
@@ -58,7 +60,7 @@ export const StyledFooter = styled.footer`
 
     a {
       padding: 0.5rem;
-      font-size: ${({ theme }) => theme.fontSize.body2};
+      font-size: ${({ theme }) => theme.fontSize.caption};
       transition: ${({ theme }) => theme.transition('color')};
 
       &:hover {

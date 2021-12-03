@@ -3,23 +3,32 @@ import { containerBase, buttonBase } from '../../global-styles';
 import { formGroupBase } from '../../global-styles/base-styles/form-group.base';
 
 export const SignUpContainer = styled(containerBase)`
-  form {
+  .form-container {
     background-color: #fff;
-    border-radius: ${({ theme }) => theme.borderRadius};
-    padding: 1.5rem;
-    max-width: 600px;
     width: 100%;
+    max-width: 600px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 1rem;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: ${({ theme }) => theme.shadows[1]};
+    border-radius: ${({ theme }) => theme.borderRadius};
+
+    padding: 1.5rem 6vw;
+    @media screen and (min-width: ${({ theme }) => theme.breakPoint}) {
+    }
+  }
+
+  form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     grid-gap: 2rem;
-
-    box-shadow: ${({ theme }) => theme.shadows[1]};
-
-    @media screen and (min-width: ${({ theme }) => theme.breakPoint}) {
-      padding: 1.5rem 6vw;
-    }
+    width: 100%;
 
     .show-hide-wrapper {
       width: 100%;
