@@ -7,7 +7,6 @@
     "start:dev": "nodemon -e ts -x ts-node -T src/main.ts",
     "build": "rm -rf ./dist && tsc",
     "lint": "eslint . --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch"
   },
