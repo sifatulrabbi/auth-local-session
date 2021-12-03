@@ -13,11 +13,11 @@ export const GlobalStyles = createGlobalStyle`
     list-style-type: none;
     text-decoration: none;
     box-sizing: border-box;
+    letter-spacing: inherit;
   }
 
   body {
     max-width: 100vw;
-    /* min-height: 100vh; */
     font-size: ${({ theme }) => theme.fontSize.body};
     font-weight: 400;
     font-family: sans-serif;
@@ -25,6 +25,7 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.palette.common.black};
     line-height: 1.5;
     position: relative;    
+    letter-spacing: normal;
   }
 
   h1, h2, h3 {

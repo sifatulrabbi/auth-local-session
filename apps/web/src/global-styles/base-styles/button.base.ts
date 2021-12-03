@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledButton = styled.button<{
+export const buttonBase = styled.button<{
   secondary?: boolean;
   big?: boolean;
   hideShadow?: boolean;
@@ -23,8 +23,7 @@ export const StyledButton = styled.button<{
 
   border-radius: ${({ theme }) => theme.borderRadius};
 
-  box-shadow: ${({ theme, hideShadow }) =>
-    !hideShadow ? theme.shadows[1] : 'none'};
+  box-shadow: ${({ theme, hideShadow }) => (!hideShadow ? theme.shadows[1] : 'none')};
 
   transition: ${({ theme }) => theme.transition('box-shadow')},
     ${({ theme }) => theme.transition('background-color')},
@@ -34,15 +33,11 @@ export const StyledButton = styled.button<{
     box-shadow: ${({ theme }) => theme.shadows[0]};
 
     border-color: ${({ theme, secondary }) => {
-      return secondary
-        ? theme.palette.primary.main
-        : theme.palette.primary.dark;
+      return secondary ? theme.palette.primary.main : theme.palette.primary.dark;
     }};
 
     background-color: ${({ theme, secondary }) => {
-      return secondary
-        ? theme.palette.common.white
-        : theme.palette.primary.dark;
+      return secondary ? theme.palette.common.white : theme.palette.primary.dark;
     }};
   }
 `;

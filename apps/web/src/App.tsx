@@ -17,7 +17,6 @@ export default function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/users/:userId" element={<UserPage />} />
         </Routes>
-        <div style={{ width: '100%', paddingTop: '30vh' }} />
         <Footer />
       </BrowserRouter>
     </ThemeProvider>

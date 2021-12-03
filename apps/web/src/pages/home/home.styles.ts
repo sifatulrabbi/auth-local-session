@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { containerBase } from '../global-styles';
+import { containerBase, buttonBase } from '../../global-styles';
 
 export const HomeContainer = styled(containerBase)`
   header {
@@ -23,3 +23,7 @@ export const HomeContainer = styled(containerBase)`
     grid-gap: 1rem;
   }
 `;
+
+export const MainSection = styled(containerBase)``;
+
+export const Button = styled(buttonBase)``;

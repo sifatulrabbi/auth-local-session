@@ -17,7 +17,7 @@ export function Navbar(): React.ReactElement {
   return (
     <StyledNav>
       <div className="logo">
-        <Link to="/">EXP</Link>
+        <Link to="/">API</Link>
       </div>
       <ToggleMenuBtn onClick={() => toggleShowMenu()}>
         {showMenu ? <FaTimes /> : <FaBars />}
