@@ -1,12 +1,4 @@
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-export const config = {
-  port: 3000,
-  mongoDbUri: 'hello',
-  sessionSecret: 'hello',
-  emailAcc: 'hello',
-  emailAccPass: 'hello',
-  errors: 'hello',
-};
+export * from './config';
+export * from './passport.config';
+export * from './session.config';
+export * from './connect-db.config';

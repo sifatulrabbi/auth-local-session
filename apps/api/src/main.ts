@@ -1,8 +1,7 @@
-import * as express from 'express';
-import * as cors from 'cors';
-// import * as session from 'express-session';
+import express from 'express';
+import cors from 'cors';
+import { config, configurePassport, configureSession, connectDb } from './config';
 import {} from './middlewares';
-import {} from './libs';
 
 const app = express();
 
@@ -10,6 +9,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.listen(3000, () => {
-  console.log(`Server is running on port: ${3000}`);
+connectDb();
+
+configureSession(app);
+configurePassport(app);
+
+app.listen(config.port, () => {
+  console.log(`Server is running on port: ${config.port}`);
 });
