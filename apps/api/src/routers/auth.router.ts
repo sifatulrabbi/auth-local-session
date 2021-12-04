@@ -19,6 +19,7 @@ router.post(
         res.status(200).redirect(`/users/${req.user._id}`);
         return;
       }
+
       throw new UnauthorizedException('Incorrect credentials', 'Authentication');
     } catch (err) {
       next(err);

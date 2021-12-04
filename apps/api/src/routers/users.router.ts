@@ -1,6 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { UsersService } from '../services';
 import { validateUserData } from '../middlewares';
+import { UnauthorizedException } from '../config';
+import { authGuard } from '../guards';
 
 const router = Router();
 const usersService = UsersService.getService();
@@ -10,7 +12,7 @@ export function useUsersRouter(app: Router): Router {
   return router;
 }
 
-router.get('/', async (req, res, next): Promise<void> => {
+router.get('/', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const users: Types.IUserPreview[] = await usersService.findAll('_id name email');
     res.status(200).json({ success: true, message: 'Users found', data: users });
@@ -19,19 +21,21 @@ router.get('/', async (req, res, next): Promise<void> => {
   }
 });
 
-router.get('/:userId', async (req, res, next): Promise<void> => {
-  try {
-    const user: Types.IUserPreview = await usersService.find({ userId: req.params['userId'] });
-    const modUser: Types.IUserPreview = {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    };
-    res.status(200).json({ success: true, message: 'Users found', data: [modUser] });
-  } catch (err) {
-    next(err);
-  }
-});
+router.get(
+  '/:userId',
+  authGuard,
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      if (!req.isAuthenticated()) {
+        throw new UnauthorizedException('User session expired. Please login again', 'Get user');
+      }
+
+      res.status(200).json({ success: true, message: 'Users found', data: [req.user] });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 router.post(
   '/',
