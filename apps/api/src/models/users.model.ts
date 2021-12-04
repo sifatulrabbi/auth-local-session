@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export class UsersModel {
+class UsersModel {
   private readonly schema = new mongoose.Schema<Types.IUserDocument>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -12,3 +12,5 @@ export class UsersModel {
     return new UsersModel().usersModel;
   }
 }
+
+export const usersModel = UsersModel.getModel();

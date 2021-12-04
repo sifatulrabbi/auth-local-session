@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { config, configurePassport, configureSession, connectDb } from './config';
-import {} from './middlewares';
+import { loggerMiddleware, handleErrors } from './middlewares';
+import { routers } from './routers';
 
 const app = express();
 
@@ -13,6 +14,12 @@ connectDb();
 
 configureSession(app);
 configurePassport(app);
+
+app.use(loggerMiddleware);
+
+app.use(routers());
+
+app.use(handleErrors);
 
 app.listen(config.port, () => {
   console.log(`Server is running on port: ${config.port}`);

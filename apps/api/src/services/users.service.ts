@@ -1,11 +1,10 @@
 import { generatePassword } from '../libs';
-import { UsersModel } from '../models';
+import { usersModel } from '../models';
+import { NotFoundException, BadRequestException } from '../config';
 
 export class UsersService {
-  constructor(private readonly usersModel: Types.IUsersModel) {}
-
   static getService(): UsersService {
-    return new UsersService(UsersModel.getModel());
+    return new UsersService();
   }
 
   async create({
@@ -15,33 +14,38 @@ export class UsersService {
     confirm_password,
   }: Types.ICreateUserDto): Promise<Types.IUserDocument> {
     if (password !== confirm_password) {
-      throw new Error("Password and confirm password don't match");
+      throw new BadRequestException("Password and confirm password didn't match", 'Creating user');
     }
 
     const hash = await generatePassword(password);
 
-    const newUser = new this.usersModel({ name, email, password: hash });
+    const newUser = new usersModel({ name, email, password: hash });
     const createdUser = await newUser.save();
     return createdUser;
   }
 
+  async findAll(fields?: string): Promise<Types.IUserDocument[]> {
+    const users = await usersModel.find({}, fields);
+    return users;
+  }
+
   async find({ userId, email }: { userId?: string; email?: string }): Promise<Types.IUserDocument> {
     if (userId) {
-      const user = await this.usersModel.findById(userId);
+      const user = await usersModel.findById(userId);
       if (!user) {
-        throw new Error('User not found');
+        throw new NotFoundException("User doesn't exists", 'Finding user');
       }
       return user;
     }
 
     if (email) {
-      const user = await this.usersModel.findOne({ email });
+      const user = await usersModel.findOne({ email });
       if (!user) {
         throw new Error('User not found');
       }
       return user;
     }
 
-    throw new Error('user id or email is required');
+    throw new BadRequestException('user id or email is required', 'Finding user');
   }
 }

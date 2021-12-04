@@ -30,5 +30,9 @@ declare global {
     export type IUserDocument = IUser & Document;
 
     export type IUsersModel = Model<IUserDocument>;
+
+    export interface Exception extends Error {
+      statusCode: number;
+    }
   }
 }
