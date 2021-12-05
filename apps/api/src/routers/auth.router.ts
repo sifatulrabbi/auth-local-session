@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import { UnauthorizedException } from '../config';
 import { validateLoginData } from '../middlewares';
+import { JSONResponse } from '../helpers';
 
 const router = Router();
 
@@ -12,17 +12,26 @@ export function useAuthRouter(app: Router): void {
 router.post(
   '/login',
   validateLoginData,
-  passport.authenticate('local'),
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      if (req.isAuthenticated() && req.user._id) {
-        res.status(200).redirect(`/users/${req.user._id}`);
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        JSONResponse.Unauthorized(res, err);
         return;
       }
 
-      throw new UnauthorizedException('Incorrect credentials', 'Authentication');
-    } catch (err) {
-      next(err);
-    }
+      if (!user) {
+        JSONResponse.Unauthorized(res, 'Incorrect credentials');
+        return;
+      }
+
+      req.logIn(user, (err) => {
+        if (err) {
+          JSONResponse.Unauthorized(res, err);
+          return;
+        }
+        JSONResponse.Ok(res, 'User authenticated', [user]);
+        return;
+      });
+    })(req, res, next);
   },
 );

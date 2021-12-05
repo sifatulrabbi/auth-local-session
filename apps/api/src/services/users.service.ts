@@ -1,6 +1,5 @@
 import { generatePassword } from '../libs';
 import { usersModel } from '../models';
-import { NotFoundException, BadRequestException } from '../config';
 
 export class UsersService {
   static getService(): UsersService {
@@ -12,9 +11,9 @@ export class UsersService {
     email,
     password,
     confirm_password,
-  }: Types.ICreateUserDto): Promise<Types.IUserDocument> {
+  }: Types.ICreateUserDto): Promise<Types.IUserDocument | null> {
     if (password !== confirm_password) {
-      throw new BadRequestException("Password and confirm password didn't match", 'Creating user');
+      return null;
     }
 
     const hash = await generatePassword(password);
@@ -29,11 +28,17 @@ export class UsersService {
     return users;
   }
 
-  async find({ userId, email }: { userId?: string; email?: string }): Promise<Types.IUserDocument> {
+  async find({
+    userId,
+    email,
+  }: {
+    userId?: string;
+    email?: string;
+  }): Promise<Types.IUserDocument | null> {
     if (userId) {
       const user = await usersModel.findById(userId);
       if (!user) {
-        throw new NotFoundException("User doesn't exists", 'Finding user');
+        return null;
       }
       return user;
     }
@@ -46,6 +51,6 @@ export class UsersService {
       return user;
     }
 
-    throw new BadRequestException('user id or email is required', 'Finding user');
+    return null;
   }
 }

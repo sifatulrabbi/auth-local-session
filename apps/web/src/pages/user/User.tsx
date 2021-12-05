@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { IUserPreview } from '../../@types';
 
-interface Props {}
+interface Props {
+  user?: IUserPreview;
+}
 
-export function UserPage({}: Props): React.ReactElement {
+export function UserPage({ user }: Props): React.ReactElement {
   return (
     <div>
-      <h1>User page</h1>
+      {user ? (
+        <>
+          <span>
+            Name: <span>{user.name}</span>
+          </span>
+          <span>
+            Email: <span>{user.email}</span>
+          </span>
+        </>
+      ) : (
+        <h1>user not found</h1>
+      )}
     </div>
   );
 }

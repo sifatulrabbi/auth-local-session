@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUserPreview {
   _id?: string;
   name: string;
   email: string;

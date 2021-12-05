@@ -1,8 +1,8 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import { UsersService } from '../services';
 import { validateUserData } from '../middlewares';
-import { UnauthorizedException } from '../config';
 import { authGuard } from '../guards';
+import { JSONResponse } from '../helpers';
 
 const router = Router();
 const usersService = UsersService.getService();
@@ -12,48 +12,31 @@ export function useUsersRouter(app: Router): Router {
   return router;
 }
 
-router.get('/', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const users: Types.IUserPreview[] = await usersService.findAll('_id name email');
-    res.status(200).json({ success: true, message: 'Users found', data: users });
-  } catch (err) {
-    next(err);
-  }
+router.get('/', async (req: Request, res: Response): Promise<void> => {
+  const users: Types.IUserPreview[] = await usersService.findAll('_id name email');
+  JSONResponse.Ok(res, 'Users found', users);
 });
 
-router.get(
-  '/:userId',
-  authGuard,
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      if (!req.isAuthenticated()) {
-        throw new UnauthorizedException('User session expired. Please login again', 'Get user');
-      }
+router.get('/:userId', authGuard, async (req: Request, res: Response): Promise<void> => {
+  if (!req.isAuthenticated()) {
+    JSONResponse.Unauthorized(res, 'Authentication failed');
+  }
+  JSONResponse.Ok(res, 'Login successful', [req.user]);
+});
 
-      res.status(200).json({ success: true, message: 'Users found', data: [req.user] });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
+router.post('/', validateUserData, async (req: Request, res: Response): Promise<void> => {
+  const { name, email, password, confirm_password } = req.body;
+  const createdUser = await usersService.create({ name, email, password, confirm_password });
 
-router.post(
-  '/',
-  validateUserData,
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { name, email, password, confirm_password } = req.body;
-      const createdUser = await usersService.create({ name, email, password, confirm_password });
+  if (createdUser) {
+    const user: Types.IUserPreview = {
+      name: createdUser.name,
+      email: createdUser.email,
+      _id: createdUser._id,
+    };
 
-      const user: Types.IUserPreview = {
-        name: createdUser.name,
-        email: createdUser.email,
-        _id: createdUser._id,
-      };
-
-      res.status(201).json({ success: true, message: 'User created', data: [user] });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
+    JSONResponse.created(res, 'User created', [user]);
+    return;
+  }
+  JSONResponse.NotFound(res, 'User not found');
+});

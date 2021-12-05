@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { LoginContainer, Button, FormGroup } from './login.styles';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { login } from '../../services';
+import { IUserPreview } from '../../@types';
 
-interface Props {}
+interface Props {
+  setUser: (user: IUserPreview) => void;
+}
 
-export function LoginPage({}: Props): React.ReactElement {
+export function LoginPage({ setUser }: Props): React.ReactElement {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -14,8 +17,11 @@ export function LoginPage({}: Props): React.ReactElement {
   async function handleFormSubmit(e: React.SyntheticEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    const userId = await login();
-    window.location.href = `/users/${userId}`;
+    const user: IUserPreview | null = await login({ email, password });
+    if (user) {
+      setUser(user);
+    }
+    console.log(user);
 
     setEmail('');
     setPassword('');

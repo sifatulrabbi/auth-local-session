@@ -3,6 +3,7 @@ import { SignUpContainer, Button, FormGroup } from './sign-up.styles';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { createUser } from '../../services';
+import { IUserPreview } from '../../@types';
 
 interface Props {}
 
@@ -16,13 +17,14 @@ export function SignUpPage({}: Props): React.ReactElement {
   async function handleFormSubmit(e: React.SyntheticEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    const userId = await createUser({
+    const user: IUserPreview | null = await createUser({
       email,
       name,
       password,
       confirm_password: confirmPassword,
     });
 
+    console.log(user);
     // window.location.href = `/users/${userId}`;
 
     setEmail('');

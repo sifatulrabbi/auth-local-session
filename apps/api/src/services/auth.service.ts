@@ -1,5 +1,5 @@
+import { Request } from 'express';
 import { usersModel } from '../models';
-import { NotFoundException, BadRequestException } from '../config';
 import { comparePassword } from '../libs';
 
 export class AuthService {
@@ -10,21 +10,25 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string,
-    done: (err: unknown | null, user?: Types.IUser) => void,
+    done: (
+      err: unknown | null,
+      user?: Types.IUserPreview | false,
+      verifyOptions?: { success: boolean; message: string },
+    ) => void,
   ): Promise<void> {
     const user: Types.IUserDocument | null = await usersModel.findOne({ email });
 
     if (!user) {
-      done(new NotFoundException('User not found', 'Authentication'));
+      done(null, false, { success: false, message: 'User not found' });
       return;
     }
 
     if (await comparePassword(password, user.password)) {
-      done(null, user);
+      done(null, { _id: user._id, name: user.name, email: user.email });
       return;
     }
 
-    done(new BadRequestException('Incorrect credentials', 'Authentication'));
+    done(null, false, { success: false, message: 'Incorrect credentials' });
   }
 
   serializer(user: Types.IUserPreview, done: (err: any, userId?: string) => void): void {
@@ -32,7 +36,7 @@ export class AuthService {
       done(null, user._id);
       return;
     }
-    done(new NotFoundException('User not found', 'Authentication'));
+    done('User not found');
   }
 
   async deserializer(
@@ -45,6 +49,6 @@ export class AuthService {
       done(null, { _id: user._id, name: user.name, email: user.email });
       return;
     }
-    done(new NotFoundException('User not found', 'Authentication'), false);
+    done('User not found', false);
   }
 }
