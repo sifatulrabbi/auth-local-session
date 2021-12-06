@@ -2,38 +2,13 @@ import React, { useState } from 'react';
 import { LoginContainer, Button, FormGroup } from './login.styles';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { login } from '../../services';
+import { useLoginService } from '../../services';
 import { IUserPreview } from '../../@types';
 
-interface Props {
-  setUser: (user: IUserPreview) => void;
-}
-
-export function LoginPage({ setUser }: Props): React.ReactElement {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+export function LoginPage(): React.ReactElement {
   const [showPass, setShowPass] = useState<boolean>(false);
 
-  async function handleFormSubmit(e: React.SyntheticEvent<HTMLFormElement>): Promise<void> {
-    e.preventDefault();
-
-    const user: IUserPreview | null = await login({ email, password });
-    if (user) {
-      setUser(user);
-    }
-    console.log(user);
-
-    setEmail('');
-    setPassword('');
-  }
-
-  function onChangeEmail(e: React.SyntheticEvent<HTMLInputElement>): void {
-    setEmail(e.currentTarget.value);
-  }
-
-  function onChangePassword(e: React.SyntheticEvent<HTMLInputElement>): void {
-    setPassword(e.currentTarget.value);
-  }
+  const { password, email, onChangeEmail, onChangePassword, handleFormSubmit } = useLoginService();
 
   function toggleShowPass(): void {
     setShowPass((prev) => !prev);

@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { IUserPreview } from '../../@types';
 
-interface Props {
-  user?: IUserPreview;
-}
-
-export function UserPage({ user }: Props): React.ReactElement {
+export function UserPage(): React.ReactElement {
   return (
     <div>
-      {user ? (
+      {/* {user ? (
         <>
           <span>
             Name: <span>{user.name}</span>
@@ -17,9 +13,9 @@ export function UserPage({ user }: Props): React.ReactElement {
             Email: <span>{user.email}</span>
           </span>
         </>
-      ) : (
-        <h1>user not found</h1>
-      )}
+      ) : ( */}
+      <h1>user not found</h1>
+      {/* )} */}
     </div>
   );
 }

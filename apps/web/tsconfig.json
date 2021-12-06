@@ -12,7 +12,7 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "esModuleInterop": true,
-    "typeRoots": ["./src/@types", "./node_modules/@types", ]
+    "typeRoots": ["./src/@types", "./node_modules/@types"]
   },
-  "include": ["/src/**/*.ts", "**/src/**/*.ts", "/src/**/*.d.ts"]
+  "include": ["/src/**/*.ts", "**/src/**/*.ts", "/src/**/*.d.ts", "src/contexts/users.contex.tsx"]
 }

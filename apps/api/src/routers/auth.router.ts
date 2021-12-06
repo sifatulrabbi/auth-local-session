@@ -13,14 +13,14 @@ router.post(
   '/login',
   validateLoginData,
   async (req: Request, res: Response, next: NextFunction) => {
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local', (err, user) => {
       if (err) {
         JSONResponse.Unauthorized(res, err);
         return;
       }
 
       if (!user) {
-        JSONResponse.Unauthorized(res, 'Incorrect credentials');
+        JSONResponse.Unauthorized(res, 'User not found please sign up first');
         return;
       }
 
