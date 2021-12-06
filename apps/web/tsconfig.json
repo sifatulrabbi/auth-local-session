@@ -14,5 +14,11 @@
     "esModuleInterop": true,
     "typeRoots": ["./src/@types", "./node_modules/@types"]
   },
-  "include": ["/src/**/*.ts", "**/src/**/*.ts", "/src/**/*.d.ts", "src/contexts/users.contex.tsx"]
+  "include": [
+    "/src/**/*.tsx",
+    "/src/**/*.ts",
+    "**/src/**/*.tsx",
+    "**/src/**/*.ts",
+    "/src/**/*.d.ts"
+  ]
 }

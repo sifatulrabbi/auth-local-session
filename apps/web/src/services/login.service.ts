@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { ILoginUser, IUserPreview } from '../@types';
-import { useUserContext } from '../contexts';
+import { useAuthContext } from '../contexts';
+import { useNavigate } from 'react-router-dom';
 
 export async function login({ email, password }: ILoginUser): Promise<IUserPreview | null> {
   const res = await axios.post('http://localhost:5000/auth/login', {
@@ -20,7 +21,9 @@ export function useLoginService(/*setUser: ((user: IUserPreview) => void) | null
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { setUser } = useUserContext();
+  const { setUser } = useAuthContext();
+
+  const navigate = useNavigate();
 
   async function handleFormSubmit(e: React.SyntheticEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
@@ -28,6 +31,7 @@ export function useLoginService(/*setUser: ((user: IUserPreview) => void) | null
     const user: IUserPreview | null = await login({ email, password });
     if (user && user._id && setUser) {
       setUser(user);
+      navigate(`/users/${user._id}`);
     }
 
     setEmail('');

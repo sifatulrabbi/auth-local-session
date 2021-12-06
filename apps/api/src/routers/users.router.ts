@@ -12,31 +12,38 @@ export function useUsersRouter(app: Router): Router {
   return router;
 }
 
-router.get('/', async (req: Request, res: Response): Promise<void> => {
+router.get('/', authGuard, async (req: Request, res: Response): Promise<void> => {
   const users: Types.IUserPreview[] = await usersService.findAll('_id name email');
   JSONResponse.Ok(res, 'Users found', users);
 });
 
 router.get('/:userId', authGuard, async (req: Request, res: Response): Promise<void> => {
+  console.log('request is here');
+  console.log(req.isAuthenticated());
   if (!req.isAuthenticated()) {
     JSONResponse.Unauthorized(res, 'Authentication failed');
   }
   JSONResponse.Ok(res, 'Login successful', [req.user]);
 });
 
-router.post('/', validateUserData, async (req: Request, res: Response): Promise<void> => {
-  const { name, email, password, confirm_password } = req.body;
-  const createdUser = await usersService.create({ name, email, password, confirm_password });
+router.post(
+  '/',
+  authGuard,
+  validateUserData,
+  async (req: Request, res: Response): Promise<void> => {
+    const { name, email, password, confirm_password } = req.body;
+    const createdUser = await usersService.create({ name, email, password, confirm_password });
 
-  if (createdUser) {
-    const user: Types.IUserPreview = {
-      name: createdUser.name,
-      email: createdUser.email,
-      _id: createdUser._id,
-    };
+    if (createdUser) {
+      const user: Types.IUserPreview = {
+        name: createdUser.name,
+        email: createdUser.email,
+        _id: createdUser._id,
+      };
 
-    JSONResponse.created(res, 'User created', [user]);
-    return;
-  }
-  JSONResponse.NotFound(res, 'User not found');
-});
+      JSONResponse.created(res, 'User created', [user]);
+      return;
+    }
+    JSONResponse.NotFound(res, 'User not found');
+  },
+);

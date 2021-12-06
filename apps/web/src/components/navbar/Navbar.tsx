@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StyledNav, NavMenu, ToggleMenuBtn } from './navbar.styles';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useAuthContext } from '../../contexts';
 
 export function Navbar(): React.ReactElement {
   const [showMenu, setShowMenu] = useState<boolean>(false);
+
+  const { auth, user } = useAuthContext();
 
   function toggleShowMenu(close?: boolean): void {
     if (close) {
@@ -38,11 +41,13 @@ export function Navbar(): React.ReactElement {
             Sign up
           </Link>
         </li>
-        <li>
-          <Link to="/users/:userId" onClick={() => toggleShowMenu(true)}>
-            Profile
-          </Link>
-        </li>
+        {auth && (
+          <li>
+            <Link to={`/users/${user?._id}`} onClick={() => toggleShowMenu(true)}>
+              Profile
+            </Link>
+          </li>
+        )}
       </NavMenu>
     </StyledNav>
   );

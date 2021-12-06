@@ -35,3 +35,8 @@ router.post(
     })(req, res, next);
   },
 );
+
+router.post('/logout', (req: Request, res: Response) => {
+  req.logout();
+  JSONResponse.Ok(res, 'Logout successful', []);
+});

@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { UnauthorizedException } from '../config';
+import { JSONResponse } from '../helpers';
 
 export function authGuard(req: Request, res: Response, next: NextFunction): void {
   if (req.isAuthenticated()) {
     next();
     return;
   }
-  next(new UnauthorizedException('User session expired please login again', 'Auth Guard'));
+  JSONResponse.Unauthorized(res, 'User session expired please login again');
 }
